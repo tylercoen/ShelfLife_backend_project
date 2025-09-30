@@ -56,8 +56,8 @@ It is built as a capstone project to demonstrate backend engineering skills usin
 
 **Books**
 
-- `GET /books` → List books (with filters)
 - `POST /books` → Add new book
+- `GET /books` → List books (with filters)
 - `GET /books/:id` → Get book details
 - `PUT /books/:id` → Update book (admin only)
 - `DELETE /books/:id` → Remove book (admin only)
