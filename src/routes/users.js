@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { User } = require("../models");
+const { register, login } = require("../controllers/authController");
+const { getMe, updateMe } = require("../controllers/userController");
+const authMiddleware = require("../middleware/authMiddleware");
 const authenticateToken = require("../middleware/authenticateToken");
 
 router.get("/me", authenticateToken, async (req, res) => {
@@ -17,5 +20,12 @@ router.get("/me", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+router.post("/register", register);
+router.post("/login", login);
+
+// Protected routes
+router.get("/me", authMiddleware, getMe);
+router.put("/me", authMiddleware, updateMe);
 
 module.exports = router;
