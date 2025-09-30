@@ -38,4 +38,19 @@ const updateMe = async (req, res) => {
   }
 };
 
-module.exports = { getMe, updateMe };
+const deleteMe = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    await user.destroy();
+
+    res.json({ message: "User deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { getMe, updateMe, deleteMe };
