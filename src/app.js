@@ -12,8 +12,11 @@ app.get("/", (req, res) => {
 const authRoutes = require("./routes/auth");
 app.use("/auth", authRoutes);
 
-const userRouter = (required = require("./routes/users"));
-app.use("/users", userRouter);
+const userRoutes = (required = require("./routes/users"));
+app.use("/users", userRoutes);
+
+const bookRoutes = require("./routes/books");
+app.use("/books", bookRoutes);
 
 //Server
 const PORT = process.env.PORT || 3000;
