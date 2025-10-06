@@ -21,6 +21,8 @@ app.use("/books", bookRoutes);
 const userBookRoutes = require("./routes/userBooks");
 app.use("/user-books", userBookRoutes);
 
+const reviewRoutes = require("./routes/reviews");
+app.use("/", reviewRoutes);
 //Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, "0.0.0.0", () => {

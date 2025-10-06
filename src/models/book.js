@@ -3,7 +3,12 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Book extends Model {
-    static associate(models) {}
+    static associate(models) {
+      Book.hasMany(models.Review, {
+        foreignKey: "bookId",
+        onDelete: "CASCADE",
+      });
+    }
   }
   Book.init(
     {
