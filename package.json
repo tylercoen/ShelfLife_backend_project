@@ -2,11 +2,13 @@
   "name": "shelflife_backend_project",
   "version": "1.0.0",
   "description": "ShelfLife is a backend API for tracking reading activity, managing personal book lists, and joining book clubs.   It is built as a capstone project to demonstrate backend engineering skills using **Node.js, Express, PostgreSQL, and modern best practices**.",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "test": "jest --runInBand",
+    "test:watch": "jest --watcAll --runInBand",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +23,16 @@
     "sequelize": "^6.37.7"
   },
   "devDependencies": {
+    "jest": "^30.2.0",
     "nodemon": "^3.1.10",
-    "sequelize-cli": "^6.6.3"
+    "sequelize-cli": "^6.6.3",
+    "supertest": "^7.1.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "verbose": true,
+    "coveragePathIngorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
