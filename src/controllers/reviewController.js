@@ -48,4 +48,21 @@ const getReviewsByBook = async (req, res) => {
   }
 };
 
-module.exports = { addReview, getReviewsByBook };
+const deleteReview = async (req, res) => {
+  try {
+    const reviewId = req.params.id;
+    const review = await Review.findByPk(reviewId);
+
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    await review.destroy();
+    res.json({ messsage: "Review deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { addReview, getReviewsByBook, deleteReview };

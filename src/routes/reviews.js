@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { addReview } = require("../controllers/reviewController");
+const { addReview, deleteReview } = require("../controllers/reviewController");
 const reviewController = require("../controllers/reviewController");
 const authenticateToken = require("../middleware/authMiddleware");
 const { READUNCOMMITTED } = require("sequelize/lib/table-hints");
@@ -14,5 +14,8 @@ router.get(
   authenticateToken,
   reviewController.getReviewsByBook
 );
+
+// DELETE /reviews/:id
+router.delete("/reviews/:id", authenticateToken, deleteReview);
 
 module.exports = router;
