@@ -31,7 +31,7 @@
   "jest": {
     "testEnvironment": "node",
     "verbose": true,
-    "coveragePathIngorePatterns": [
+    "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
   }

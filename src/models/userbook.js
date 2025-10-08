@@ -26,6 +26,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "UserBook",
+      foreignKey: "bookId",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
     }
   );
   return UserBook;

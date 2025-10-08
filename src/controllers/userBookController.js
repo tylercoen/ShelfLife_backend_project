@@ -53,6 +53,19 @@ const updateUserBook = async (req, res) => {
   }
 };
 
+const getUserBooks = async (req, res) => {
+  try {
+    const userBooks = await UserBook.findAll({
+      where: { userId: req.user.id },
+      include: [{ model: Book }],
+    });
+    res.status(200).json({ userBooks });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 const deleteUserBook = async (req, res) => {
   try {
     const userBookId = req.params.id;
@@ -77,4 +90,4 @@ const deleteUserBook = async (req, res) => {
   }
 };
 
-module.exports = { addUserBook, updateUserBook, deleteUserBook };
+module.exports = { addUserBook, updateUserBook, getUserBooks, deleteUserBook };

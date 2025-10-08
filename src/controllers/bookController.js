@@ -35,7 +35,8 @@ const listBooks = async (req, res) => {
         "updatedAt",
       ],
     });
-    res.json(books);
+    //res.json(books);
+    res.status(200).json({ books });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
