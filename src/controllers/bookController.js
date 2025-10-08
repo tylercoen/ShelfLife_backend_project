@@ -55,4 +55,35 @@ const getBookById = async (req, res) => {
   }
 };
 
-module.exports = { addBook, listBooks, getBookById };
+const updateBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedData = req.body;
+
+    const book = await Book.findByPk(id);
+    if (!book) return res.status(404).json({ message: "Book not found" });
+
+    await book.update(updatedData);
+    res.status(200).json({ message: "Book updated successfully", book });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const deleteBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const book = await Book.findByPk(id);
+    if (!book) return res.status(404).json({ message: "Book not found" });
+
+    await book.destroy();
+    res.status(200).json({ message: "Book deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = { addBook, listBooks, getBookById, updateBook, deleteBook };
