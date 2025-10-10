@@ -22,7 +22,7 @@ const userBookRoutes = require("./routes/userBooks");
 app.use("/user-books", userBookRoutes);
 
 const reviewRoutes = require("./routes/reviews");
-app.use("/", reviewRoutes);
+app.use("/reviews", reviewRoutes);
 /*
 //Server
 const PORT = process.env.PORT || 3000;

@@ -144,9 +144,47 @@ describe("User-Books Endpoints (Reading Status)", () => {
   });
 });
 
-describe("Reviews Endpoints", () => {});
+describe("Reviews Endpoints", () => {
+  it("POST /reviews -> should create a review", async () => {
+    const res = await request(app)
+      .post("/reviews")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ bookId, content: "Great book!", rating: 5 });
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.review).toHaveProperty("id");
+    reviewId = res.body.review.id;
+  });
+  it("GET /reviews/:bookId -> should return reviews for a book", async () => {
+    const res = await request(app)
+      .get(`/reviews/${bookId}`)
+      .set("Authorization", `Bearer ${token}`);
+    expect(res.statusCode).toBe(200);
+    expect(Array.isArray(res.body.reviews)).toBe(true);
+    expect(res.body.reviews.length).toBeGreaterThan(0);
+  });
+
+  it("PUT /reviews/:id -> should update a review", async () => {
+    const res = await request(app)
+      .put(`/reviews/${reviewId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({ content: "Updated review", rating: 4 });
+    expect(res.statusCode).toBe(200);
+    expect(res.body.review.content).toBe("Updated review");
+    expect(res.body.review.rating).toBe(4);
+  });
+});
 
 describe("Cleanup", () => {
+  it("DELETE /reviews/:id -> should delete a review", async () => {
+    const res = await request(app)
+      .delete(`/reviews/${reviewId}`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.message).toBe("Review deleted");
+  });
+
   it("DELETE /books/:id -> should delete the book", async () => {
     const res = await request(app)
       .delete(`/books/${bookId}`)

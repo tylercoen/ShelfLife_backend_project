@@ -1,10 +1,8 @@
 const { Review, Book, User } = require("../models");
-const review = require("../models/review");
 
 const addReview = async (req, res) => {
   try {
-    const { content, rating } = req.body;
-    const bookId = req.params.id;
+    const { content, rating, bookId } = req.body;
 
     const book = await Book.findByPk(bookId);
     if (!book) return res.status(404).json({ message: "Book not found" });
@@ -16,7 +14,7 @@ const addReview = async (req, res) => {
       bookId,
     });
 
-    res.status(201).json(review);
+    res.status(201).json({ message: "Review added successfully", review });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -26,13 +24,11 @@ const addReview = async (req, res) => {
 // GET /books/:id/reviews
 const getReviewsByBook = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    console.log(`Fetching reviews for book ID: ${id}`);
+    const { bookId } = req.params;
 
     const reviews = await Review.findAll({
-      where: { bookId: id },
-      include: [{ model: User, attributes: ["id", "username", "email"] }],
+      where: { bookId },
+      include: [{ model: User, attributes: ["username", "email"] }],
       order: [["createdAt", "DESC"]],
     });
 
@@ -41,28 +37,46 @@ const getReviewsByBook = async (req, res) => {
         .status(404)
         .json({ message: "No reviews found for this book" });
     }
-    res.status(200).json(reviews);
+    res.status(200).json({ reviews });
   } catch (err) {
     console.error("Error fetching reviews:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
-const deleteReview = async (req, res) => {
+const updateReview = async (req, res) => {
   try {
-    const reviewId = req.params.id;
-    const review = await Review.findByPk(reviewId);
+    const { id } = req.params;
+    const { content, rating } = req.body;
 
-    if (!review) {
-      return res.status(404).json({ message: "Review not found" });
-    }
+    const review = await Review.findOne({ where: { id, userId: req.user.id } });
+    if (!review) return res.status(404).json({ message: "Review not found" });
 
-    await review.destroy();
-    res.json({ messsage: "Review deleted successfully" });
+    if (content) review.content = content;
+    if (rating !== undefined) review.rating = rating;
+
+    await review.save();
+    res.json({ message: "Review updated successfully", review });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-module.exports = { addReview, getReviewsByBook, deleteReview };
+const deleteReview = async (req, res) => {
+  try {
+    const review = await Review.findByPk(req.params.id);
+
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    await review.destroy();
+    res.json({ message: "Review deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { addReview, getReviewsByBook, updateReview, deleteReview };

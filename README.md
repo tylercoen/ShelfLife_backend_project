@@ -72,6 +72,7 @@ It is built as a capstone project to demonstrate backend engineering skills usin
 
 - `POST /books/:id/reviews` → Add review for a book
 - `GET /books/:id/reviews` → Get reviews for a book
+- `PUT /books/:id` → Update reviews
 - `DELETE /reviews/:id` → Delete review
 
 **Clubs (Future Feature)**
