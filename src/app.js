@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+require("./swagger")(app);
 
 //Middleware
 app.use(express.json());
